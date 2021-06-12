@@ -1,0 +1,146 @@
+{% extends "covid/commenpage.html" %} 
+{% block body %}
+<div class="row d-flex justify-content-center">
+    <div class="col-sm-4 bg-white rounded">
+      <h3 align="center"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/23px-Flag_of_India.svg.png">&nbsp;&nbsp;Covid-19 India</h3>
+    </div>
+</div>
+<br><br>
+<div class="row">
+<div id="chartContainer1" class="col-sm" style="height: 300px; width: 100%;"></div>
+</div>
+<br><br>
+<div class="row">
+	<div id="chartContainer" class="col-sm" style="height: 300px; width: 100%;margin: 15px"></div>
+	<br><br>
+	<div id="chartContainer2" class="col-sm" style="height: 300px; width: 100%;margin: 15px"></div>
+</div>
+<br><br>
+<div class="row">
+	<div id="chartContainer3" class="col-sm" style="height: 300px; width: 100%;margin: 15px"></div>
+	<div id="chartContainer4" class="col-sm" style="height: 300px; width: 100%;margin: 15px"></div>
+
+</div>
+<br><br>
+
+<div class="row">
+    <div id="chartContainer5" class="col-sm" style="height: 300px; width: 100%;margin: 15px"></div>
+</div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script type="text/javascript" src="{{url_for('static',filename='js/stats_charts.js')}}"></script>
+
+<script>
+var hu=""
+var calender={"January":0 ,'February':1,'March':2,'April':3,'May':4,'June':5,'July':6
+,'August':7,'September':8,"October":9,'November':10,'December':11}
+window.onload = function() {
+	var url=localStorage.getItem("url");
+	$.post(url+"india_statistic",{},
+                
+          function(response){
+
+          var india="India" 
+          var fromdate="31 January 2020"
+          	console.log(response)
+        			TotalCases=response['IndiaInfo'][1]
+        			ActiveCases=response['IndiaInfo'][4]
+        			RecoverdCases=response['IndiaInfo'][2]
+        			DeathCases=response['IndiaInfo'][3]
+        			MigrateCases=response['IndiaInfo'][9]
+        			chartContainer(TotalCases,ActiveCases,RecoverdCases,DeathCases,MigrateCases);
+
+        			chartContainer1(TotalCases,ActiveCases,RecoverdCases,DeathCases,MigrateCases);
+
+        			ntc=Number(response['IndiaInfo'][5]);
+        			nrc=Number(response['IndiaInfo'][6]);
+        			ndc=Number(response['IndiaInfo'][7]);
+        			chartContainer2(ntc,nrc,ndc);
+
+        			var Confirmed=[];
+        			var Recoverd=[];
+        			var Death=[];
+        			for(var i=0;i<response['GrowthResult'].length;i++){
+        				date=Number(response['GrowthResult'][i][0][0])
+        				month=calender[response['GrowthResult'][i][0][1]]
+        				year=2020
+
+        				jsonc={ x: new Date(year, month, date), y: response['GrowthResult'][i][1] };
+        				Confirmed.push(jsonc);
+
+        				jsonr={ x: new Date(year, month, date), y: response['GrowthResult'][i][2] };
+        				Recoverd.push(jsonr);
+
+        				jsond={ x: new Date(year, month, date), y: response['GrowthResult'][i][3] };
+        				Death.push(jsond);
+	
+        			}
+
+        			chartContainer3(Confirmed,Recoverd,Death,fromdate);
+
+
+        			var DConfirmed=[];
+        			var DRecoverd=[];
+        			var DDeath=[];
+        			for(var i=0;i<response['DailyResult'].length;i++){
+        				date=Number(response['DailyResult'][i][0][0])
+        				month=calender[response['DailyResult'][i][0][1]]
+        				year=2020
+
+        				jsonc={ x: new Date(year, month, date), y: response['DailyResult'][i][1] };
+        				DConfirmed.push(jsonc);
+
+        				jsonr={ x: new Date(year, month, date), y: response['DailyResult'][i][2] };
+        				DRecoverd.push(jsonr);
+
+        				jsond={ x: new Date(year, month, date), y: response['DailyResult'][i][3] };
+        				DDeath.push(jsond);
+	
+        			}
+        			
+        			chartContainer4(DConfirmed,DRecoverd,DDeath,india,fromdate);
+
+                    chartContainer5(response['LakhDayRate'])
+
+
+        			
+
+
+			},"json");
+	
+}
+
+
+
+console.log("hiiiiiiiiii"+hu)
+function chartContainer5(hu){
+var chart5 = new CanvasJS.Chart("chartContainer5", {
+    animationEnabled: true,
+    theme:"dark2",
+    
+    title:{
+        text:"Days To Reached Next 100000 Cases"
+    },
+    axisX:{
+        interval: 1
+    },
+    axisY2:{
+        interlacedColor: "rgba(1,77,101,.2)",
+        gridColor: "rgba(1,77,101,.1)",
+        title: "Number of Days"
+    },
+    data: [{
+        type: "bar",
+        name: "companies",
+        toolTipContent: "<strong>{y} Days</strong>",
+        axisYType: "secondary",
+        color: "#014D65",
+        dataPoints: hu
+    }]
+});
+chart5.render();
+}
+</script>
+<script type="text/javascript">
+    
+</script>
+{% endblock %}

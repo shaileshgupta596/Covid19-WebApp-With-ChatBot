@@ -1,0 +1,96 @@
+{"Intent":
+	{	
+		"greeting":{
+			"Pattern":["Hello","Heys","How are You?","Whats up?","who are you ?"],
+			"Response":["Hey ,i am covidbot machine how may i help you?"],
+			"Context-Text":""
+		},
+		"bye":{
+			"Pattern":["bye","Meet Next time","lets meet next time,i am going ,","Okay thank you"],
+			"Response":["Bye ,I Hope You Liked Conversation with us.\n Thank You"],
+			"Context-Text":""
+		},
+		"age":{
+			"Pattern":["What is your age covidbot?","what is your age ?","when you are invented?","How Old you are?"],
+			"Response":["I am 1 month Old. I have less knowledge of world. please help me to gain knowledge."]
+		},
+		"owner":{
+			"Pattern":["your inventer name ?","who has made you ?","what is your owner name ?",
+				"who is your inventer ?"],
+			"Response":["Mr.Shailesh Gupta. He is student of Information Technology"]
+		},
+		"made":{
+			"Pattern":["tell me about your self ?","how you made?","what is used for making you ?","which Technology used for msking you?","how you response ?"],
+			"Response":["I am a rule based bot made by ML Technology. for More Information please check this blogs: https://www.medium.com/shaileshgupta596/covidbot"]
+		},
+		"information":{
+			"Pattern":["what type of information you provide ?","how can you help me?","what is your main task?","your specialization?"],
+			"Response":["I am Providing information related to Covid such as :\nCovid Statistic in world \n Covid Statistic of india ,states,districts \n recovery rates of india,states,districts \n News "]
+		},
+		"covid19about":{
+			"Pattern":["What is a novel coronavirus ?","What is a novel coronavirus ?","what is covid19 or corona ?","About Covid or corona","When covid or corona found ?" ,"where it is founded first?",
+				"what is coronavirus or corona or covid"," where coronavirus founded first ?","About Coronavirus ?"],
+			"Response":["Coronavirus disease 2019 (COVID-19) is an infectious disease caused by severe acute respiratory syndrome coronavirus 2 (SARS-CoV-2).It was first identified in December 2019 in Wuhan, Hubei, China, and has resulted in an ongoing pandemic.The first confirmed case has been traced back to 17 November 2019 in Hubei. As of 25 July 2020, more than 15.7 million cases have been reported across 188 countries and territories"]
+		},
+		"covidsymtomes":{
+			"Pattern":["symtomes of covid ?","symtomes of coronavirus ?","how corona or affects?",
+				"symtomes of corona ?","signs of corona ?","signs of covid ?","what are the symtomes of covid or corona ?"],
+			"Response":["It is highly variable in severity and presentationOther.\n common symptoms include:\n fever cough, loss of appetite, fatigue, shortness of breath, sputum production, and muscle and joint pains .\n Symptoms such as nausea, vomiting, and diarrhoea have been observed in varying percentages.\n Less common symptoms include sneezing, runny nose, sore throat, and skin lesions.\n Some cases in China initially presented with only chest tightness and palpitations.\n A decreased sense of smell or disturbances in taste may occur.\n Loss of smell was a presenting symptom in 30% of confirmed cases in South Korea"]
+		},
+		"covidtransmission":{
+			"Pattern":["Can humans become infected with a novel coronavirus of animal source?","how it transmit ?","how corona or covid transmit ?","tranmission of corona how takes?",
+				"Is corona transmit through animals ?","how many ways corona or covid or coronavirus affects?",
+				"how it spread ?","is corona tranmit through metels?","can covid lies on paper?"],
+			"Response":["The virus is primarily spread between people during close contact.\n most often via small droplets produced by coughing, sneezing, and talking.\n The droplets usually fall to the ground or onto surfaces rather than travelling through air over long distances.\n Transmission may also occur through smaller droplets that are able to stay suspended in the air for longer periods of time.\n people may become infected by touching a contaminated surface and then touching their face"]
+		},
+		"covidprevention":{
+			"Pattern":["how to prevent from corona or covid or coronavirus ?","how to take care ourself ?",
+				"what are the things need to be take care ?","Prevention taken form this virus or covid or corona ?"],
+			"Response":["frequent hand washing, maintaining physical distance from others , quarantine (especially for those with symptoms).\n covering coughs, and keeping unwashed hands away from the face.\n The use of cloth face coverings such as a scarf or a bandana has been recommended by health officials in public settings to minimise the risk of transmissions, with some authorities requiring their use.\n medical-grade face masks, such as N95 masks,gloves .\n Make youe Immunity Stroger."]
+		},
+		"covidquery":{
+			"Pattern":[" I have symtomes of covid ?","I have some of the symtomes of corona or covid ?",
+				"I have Fever is this a corona ?","what should i do if found symtomes of covid ?",
+				"how corona can be Cure ?","what are the age limit covid affects More ?"],
+			"Response":["I dont have any medical knowledge!!\n Please Consult to Doctor If you have Symtomes related to Corona."]
+		},
+		"agerisk":{
+			"Pattern":["who will be more affected?","Who has at higher risk of corona or covid ?","are kids are at more risk?","are old or aged people are having more risk ?",
+				"Which age group are at more Risk?" ,"Covid or corona affects heathy people ?"],
+			"Response":["Everyone will be affected by this virus but old and children get affected easily."]
+		},
+		"actualcause":{
+			"Pattern":["how corona or covid affect human body ?","how corona attack human body ?",
+				"what type of of attack it does? "],
+			"Response":["It affects human respiratory system which cause problem in less oxygen in body."]
+		},
+
+		"covid_world":{
+			"Pattern":["Can you give Covid or corona count Data of World ?","How Much Covid or corona New Cases in World?",
+				"Covid or corona Statistic of world ?" ,"how many Covid or corona death Cases in World ?","How Many active Cases in world?",
+				"how much Cases in world ?" ,"what is Current Covid cases in World ?","Corona Statistic of world ?","Count of corona or covid in world?"],
+			"Response":["Total_cases:11,200,000 \n Active Cases: 1,100,000 \n Recoverd Cases:5,670,000 \n Death Cases:1,200,000" ]
+		},
+		"covid_countries":{
+			"Pattern":["can you give information of covid or corona in countries ?","Countries Corona or covid Count?","Affected Countries due to corona ?",
+				"what is the count of corona in different countries?","Statistic of corona in different Countries ?","tell me country stats for corona or covid?"],
+			"Response":["https://covid19indiavisualizer.pythonanywhere.com/"]
+		},
+		"coronaindia":{
+			"Pattern":["can you tell me live updates od covid or corona in india?","what is corona or covid count in india ?","what is corona or covid Statistic in india?","how many death cases in india?",
+				"how many active cases of covid or corona in india?","how many death cases of covid or corona in india?",
+				"recovery rate of corona or covid in india ?","recoverd cases of covid or corona in india?",
+				"new cases found in india?","todays death cases in india ?","todays recoverd cases of covid or corona in india?"],
+			"Response":["https://covid19indiavisualizer.pythonanywhere.com/country_table"]
+		},
+		"coronaindiastates":{
+			"Pattern":["what is covid or corona situation different states of india ?","corona updates in indian states?",
+				"corona or covid cases in indian states ?"," count of covid or corona in different states ?",
+				"indian states situation in covid or corona situation ?","covid or corna inforamtion in different states of india?"],
+			"Response":["https://covid19indiavisualizer.pythonanywhere.com/country_table"]
+		}
+
+
+
+	}
+}

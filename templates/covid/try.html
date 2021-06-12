@@ -1,0 +1,80 @@
+{% extends "covid/commenpage.html" %}
+{% block body %}
+
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/maps.js"></script>
+<script src="https://www.amcharts.com/lib/4/geodata/worldLow.js"></script>
+<div id="chartdiv" style="width: 100%;height: 550px;margin-top: 40px;"></div>
+<script>
+/**
+ * ---------------------------------------
+ * This demo was created using amCharts 4.
+ *
+ * For more information visit:
+ * https://www.amcharts.com/
+ *
+ * Documentation is available at:
+ * https://www.amcharts.com/docs/v4/
+ * ---------------------------------------
+ */
+
+// Create map instance
+var chart = am4core.create("chartdiv", am4maps.MapChart);
+
+// Set map definition
+chart.geodata = am4geodata_worldLow;
+
+// Set projection
+chart.projection = new am4maps.projections.Miller();
+
+// Create map polygon series
+var polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
+
+// Make map load polygon (like country names) data from GeoJSON
+polygonSeries.useGeodata = true;
+
+// Configure series
+var polygonTemplate = polygonSeries.mapPolygons.template;
+polygonTemplate.tooltipText = '{name} \nTotal Cases: {value} \n Active Cases: {activecases}\n Death Cases: {deathcases}\nRecoverd Cases:{recoverdcases} ';
+polygonTemplate.fill = am4core.color("#999");
+
+// Create hover state and set alternative fill color
+var hs = polygonTemplate.states.create("hover");
+hs.properties.fill = am4core.color("#367B25");
+
+// Remove Antarctica
+polygonSeries.exclude = ["AQ"];
+
+// Add heat rule
+polygonSeries.heatRules.push({
+  "property": "fill",
+  "target": polygonSeries.mapPolygons.template,
+  "min": am4core.color("black"),
+  "max": am4core.color("red")
+});
+//#ffffff
+//#AAAA00
+/*
+// Add expectancy data
+polygonSeries.data=[]
+*/
+var url=localStorage.getItem("url");
+ data=[]
+$.post(url+"globe_data_for_map",{},
+                
+          function(response){ 
+            
+           //console.log(response)
+           //console.log(response['Info'][0][0])
+           //console.log(Number((response['Info'][0][1][3]).replace(',','')))
+           
+            for(var i=0;i< response['Info'].length;i++){
+            data.push({id:response["Info"][i][0] , value :response['Info'][i][1][1],deathcases:response['Info'][i][1][2],recoverdcases:response['Info'][i][1][3],activecases:response['Info'][i][1][4]})
+          }
+          
+          //console.log(data)
+          polygonSeries.data=data
+
+},"json");
+</script>
+{% endblock %}

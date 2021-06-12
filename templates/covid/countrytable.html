@@ -1,0 +1,172 @@
+{% extends "covid/commenpage.html" %}
+{% block body%}
+<style type="text/css">
+ table {
+    counter-reset: tableCount;     
+}
+.counterCell:before {              
+    content: counter(tableCount); 
+    counter-increment: tableCount; 
+}</style>
+
+
+
+
+<style type="text/css">
+  .counterContainer{
+    height: 150px;
+    margin:25px;
+    color:white;
+  }
+  .counter{
+    margin: auto;
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center
+  }
+  .counterName{
+    font-size:20px;
+    font-weight: bold;
+    text-align: center;
+  }
+  #tc,#ac,#rc,#dc{
+    font-weight: bolder;
+  }
+</style>
+<!--<script src= "static/js/jquery-3.4.1.js"></script>-->
+<div class="row d-flex justify-content-center">
+    <div class="col-sm-4 bg-white rounded">
+      <h3 align="center"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/23px-Flag_of_India.svg.png">&nbsp;&nbsp;Covid-19 India</h3>
+    </div>
+</div>
+<div class="container">
+<div class="row">
+<div class="col-sm bg-primary shadow counterContainer">
+  <div class="counter" id="TotalCases">0</div>
+  <div align="center" id="tc"></div>
+  <div class="counterName">Total</div>
+</div>
+<div class="col-sm bg-warning shadow counterContainer">
+  <div class="counter" id="ActiveCases" >0</div>
+  <div align="center" id="ac"></div>
+  <div class="counterName">Active</div>
+</div>
+<div class="col-sm bg-success shadow counterContainer">
+  <div class="counter" id="RecoverdCases">0</div>
+  <div align="center" id="rc"></div>
+  <div class="counterName">Recoverd</div>
+</div>
+<div class="col-sm bg-danger shadow counterContainer">
+  <div class="counter" id="DeathCases">0</div>
+  <div align="center" id="dc"></div>
+  <div class="counterName">Death</div>
+</div>
+<div class="col-sm bg-danger shadow counterContainer">
+  <div class="counter" id="MigratedCases">0</div>
+  <div align="center" id="">-</div>
+  <div class="counterName">Migrated</div>
+</div>
+</div>
+
+</div>
+
+</div>
+
+
+
+
+<table align="center" class="table shadow table table-striped table-dark" style="width:80%;">
+  <thead>
+    <tr align="center">
+      <th scope="col" colspan="7" ><img src="https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/23px-Flag_of_India.svg.png">Covid-19 Statewise Data <img src="static/image/virus.png" style="width:50px;height: 50px;border-radius: 50%"></th>     
+    </tr>   
+    <tr align="center">
+      <th scope="col">Sr No.</th>
+    	<th scope="col">State Name</th>
+      <th scope="col">Total Cases</th>
+      <th scope="col">Active Cases</th>
+      <th scope="col">Recoverd Cases</th>
+      <th scope="col">Death Cases</th>
+      <th scope="col">Migreted</th>
+    </tr>
+  </thead>
+  <tbody style="font-size: 14px;">
+  {% if result|length >0%}
+    {% for data in result %}
+    <tr align="center">
+      <th scope="col" class="counterCell"></th>
+      <th style="font-weight: bolder;font-size:15px;text-transform:capitalize;color:white">{{data[0]}}
+        <br>
+        <button class="btn btn-sm btn-danger" district="{{data[0]}}" onclick="district_wise_data_of_states(this)" data-toggle="modal" data-target=".bd-example-modal-lg"><b>Show Districts</b></button>
+      </th>
+      <th style="color: #00b3b3"><b>{{data[1]}} <br><lable>+ &nbsp; {{data[5]}}</lable></b></th>
+      <th style="color: #ffff80"> {{data[4]}} </th>
+      <th style="color: #1aff8c"> {{data[2]}} <br> <label>+&nbsp; {{data[6]}}</lable></th>
+      <th style="color: #ff5c33"> {{data[3]}} <br>+ &nbsp; <label>{{data[7]}}</label></th>
+      <th style="color:white">{{data[9]}}</th>
+    </tr>
+    {% endfor %}
+    {% else %}
+      <tr align="center"><th colspan="5">No Result found</th></tr>
+  {% endif%}
+    
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">District Info</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+          <table align="center" class="table shadow table table-striped table-dark" style="width:100%;">
+            <thead>
+              <tr align="center">
+                <th scope="col" colspan="6" ><img src="https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/23px-Flag_of_India.svg.png">Covid-19 District Data <img src="static/image/virus.png" style="width:50px;height: 50px;border-radius: 50%"></th>     
+              </tr>   
+              <tr align="center">
+                <th scope="col">Sr No.</th>
+                <th scope="col">District Name</th>
+                <th scope="col">Total Cases</th>
+                <th scope="col">Active Cases</th>
+                <th scope="col">Recoverd Cases</th>
+                <th scope="col">Death Cases</th>
+              </tr>
+            </thead>
+            <tbody style="font-size: 14px;" id="yourorderstable">
+
+            </tbody>
+          </table>
+    </div>
+  </div>
+</div>
+
+
+
+<script type="text/javascript">
+      function CounterProcess(){
+        var tc='{{tc}}',dc='{{dc}}',rc='{{rc}}',ac='{{ac}}',mc='{{mc}}';
+        file1(tc,ac,dc,rc,mc);
+      }
+      CounterProcess();
+      document.getElementById('tc').innerHTML="{{tc1}}";
+      document.getElementById('ac').innerHTML="-"
+      document.getElementById('rc').innerHTML="{{rc1}}"
+      document.getElementById('dc').innerHTML="{{dc1}}"
+</script>
+<script type="text/javascript" src="{{url_for('static',filename='js/district.js')}}"></script>
+{% endblock %}

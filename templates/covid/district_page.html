@@ -1,0 +1,103 @@
+{% extends "covid/commenpage.html" %}
+{% block body %}
+<style type="text/css">
+ table {
+    counter-reset: tableCount;     
+}
+.counterCell:before {              
+    content: counter(tableCount); 
+    counter-increment: tableCount; 
+}</style>
+
+<style type="text/css">
+  .counterContainer{
+    height: 100px;
+    margin:25px;
+    color:white;
+  }
+  .counter{
+    margin: auto;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center
+  }
+  .counterName{
+    font-size:18px;
+    font-weight: bold;
+    text-align: center;
+  }
+  #tc,#ac,#rc,#dc{
+    font-weight: bolder;
+  }
+</style>
+
+<div class="row  justify-content-md-center" >
+      	
+                  
+                  <label for="ProductType" style="font-size: 20px;color: white;font-weight: bolder">Choose State</label>
+				    <select class="form-control form-control" id="ProductType" onchange="district_page_response(this)">
+				    <option selected disabled>Choose...</option>
+				    {% for state in result %}
+				    <option value="{{state}}">{{state}}</option>
+				    {% endfor %}
+				  </select>
+				  <br><br><br><br>
+</div> 
+
+
+
+<div class="container" id="counterContainer" style="display: none">
+<div class="row">
+<div class="col-sm bg-primary shadow counterContainer">
+  <div class="counter" id="TotalCases">0</div>
+  <div align="center" id="tc"></div>
+  <div class="counterName">Total</div>
+</div>
+<div class="col-sm bg-warning shadow counterContainer">
+  <div class="counter" id="ActiveCases" >0</div>
+  <div align="center" id="ac"></div>
+  <div class="counterName">Active</div>
+</div>
+<div class="col-sm bg-success shadow counterContainer">
+  <div class="counter" id="RecoverdCases">0</div>
+  <div align="center" id="rc"></div>
+  <div class="counterName">Recoverd</div>
+</div>
+<div class="col-sm bg-danger shadow counterContainer">
+  <div class="counter" id="DeathCases">0</div>
+  <div align="center" id="dc"></div>
+  <div class="counterName">Death</div>
+</div>
+<div class="col-sm bg-danger shadow counterContainer">
+  <div class="counter" id="MigratedCases">0</div>
+  <div align="center" id="">-</div>
+  <div class="counterName">Migrated</div>
+</div>
+</div>
+
+</div>
+
+
+
+
+<table align="center" class="table shadow table table-striped table-dark" style="width:100%;">
+            <thead>
+              <tr align="center">
+                <th scope="col" colspan="6" ><img src="https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/23px-Flag_of_India.svg.png">Covid-19 District Data <img src="static/image/virus.png" style="width:50px;height: 50px;border-radius: 50%"></th>     
+              </tr>   
+              <tr align="center">
+                <th scope="col">Sr No.</th>
+                <th scope="col">District Name</th>
+                <th scope="col">Total Cases</th>
+                <th scope="col">Active Cases</th>
+                <th scope="col">Recoverd Cases</th>
+                <th scope="col">Death Cases</th>
+              </tr>
+            </thead>
+            <tbody style="font-size: 14px;" id="yourorderstable">
+
+            </tbody>
+ </table>
+ <script type="text/javascript" src="{{url_for('static',filename='js/counter.js')}}"></script>
+ <script type="text/javascript" src="{{url_for('static',filename='js/district.js')}}"></script>
+{% endblock %}

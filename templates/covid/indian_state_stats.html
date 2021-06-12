@@ -1,0 +1,148 @@
+{% extends "covid/commenpage.html" %}
+{% block body %}
+<div class="row  justify-content-md-center" >
+      	
+                  
+                  <label for="ProductType" style="font-size: 20px;color: white;font-weight: bolder">Choose State</label>
+				    <select class="form-control form-control" id="ProductType" onchange="indian_state_stats_page_response(this)">
+				    <option selected disabled>Choose...</option>
+				    {% for state in result %}
+				    {% if state != "Total" %}
+				    <option value="{{state}}">{{state}}</option>
+				    {% endif %}
+				    {% endfor %}
+				  </select>
+				  <br><br><br><br>
+</div>
+
+<div class="row d-flex justify-content-center">
+    <div class="col-sm-4 bg-dark shadow rounded">
+      <h3 align="center" id="state_name" style="color:white"></h3>
+    </div>
+</div>
+
+
+<br><br>
+<div class="row">
+<div id="chartContainer1" class="col-sm" style="height: 300px; width: 100%;"></div>
+</div>
+<br><br>
+<div class="row">
+	<div id="chartContainer" class="col-sm" style="height: 300px; width: 100%;margin: 15px"></div>
+	<br><br>
+	<div id="chartContainer2" class="col-sm" style="height: 300px; width: 100%;margin: 15px"></div>
+</div>
+<br><br>
+<div class="row">
+	<div id="chartContainer3" class="col-sm" style="height: 300px; width: 100%;margin: 15px"></div>
+	<div id="chartContainer4" class="col-sm" style="height: 300px; width: 100%;margin: 15px"></div>
+
+</div>
+<br><br>
+<script type="text/javascript" src="{{url_for('static',filename='js/stats_charts.js')}}"></script>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script type="text/javascript">
+
+var calender={"Jan":0 ,'Feb':1,'Mar':2,'Apr':3,'May':4,'Jun':5,'Jul':6
+,'Aug':7,'Sep':8,"Oct":9,'Nov':10,'Dec':11}
+
+function indian_state_stats_page_response(li){
+  var url=localStorage.getItem("url");
+  var state_name =  li.value;
+  //console.log(state_name);
+  var Info=""
+  //document.getElementById('yourorderstable').innerHTML = '<p style="color:white;font-size:20px;" align="center"><b>Loading.....</b></p>'
+  
+  $.post(url+"indian_state_stats",{state_name:state_name},
+                
+          function(response){ 
+            var state_name = response['StateInfo'][0]
+            fromdate="14-March-2020"
+            document.getElementById('state_name').innerHTML = response['StateInfo'][0];
+           //console.log(response)
+           TotalCases=response['StateInfo'][1]
+        			ActiveCases=response['StateInfo'][4]
+        			RecoverdCases=response['StateInfo'][2]
+        			DeathCases=response['StateInfo'][3]
+        			MigrateCases=response['StateInfo'][9]
+        			chartContainer(TotalCases,ActiveCases,RecoverdCases,DeathCases,MigrateCases);
+
+        			chartContainer1(TotalCases,ActiveCases,RecoverdCases,DeathCases,MigrateCases);
+
+        			ntc=Number(response['StateInfo'][5]);
+        			nrc=Number(response['StateInfo'][6]);
+        			ndc=Number(response['StateInfo'][7]);
+        			chartContainer2(ntc,nrc,ndc);
+
+
+        			var Confirmed=[];
+        			var Recoverd=[];
+        			var Death=[];
+        			var csum = 0;
+        			var rsum = 0;
+        			var dsum = 0;
+        			for(var i=0;i<response['ConfirmedList'].length;i++){
+        				date=Number(response['ConfirmedList'][i][0][0])
+        				month=calender[response['ConfirmedList'][i][0][1]]
+        				year=Number(response['ConfirmedList'][i][0][2])
+						
+						csum = csum + response['ConfirmedList'][i][2]
+        				jsonc={ x: new Date(year, month, date), y: csum};
+        				Confirmed.push(jsonc);
+        			}
+        			for(var i=0;i<response['RecoverdList'].length;i++){
+        				date=Number(response['RecoverdList'][i][0][0])
+        				month=calender[response['RecoverdList'][i][0][1]]
+        				year=Number(response['RecoverdList'][i][0][2])
+
+        				rsum =rsum + response['RecoverdList'][i][2] 
+        				jsonr={ x: new Date(year, month, date), y: rsum};
+        				Recoverd.push(jsonr);
+        			}
+        			for(var i=0;i<response['DeathList'].length;i++){
+        				date=Number(response['DeathList'][i][0][0])
+        				month=calender[response['DeathList'][i][0][1]]
+        				year=Number(response['DeathList'][i][0][2])
+
+        				dsum = dsum + response['DeathList'][i][2] 
+        				jsond={ x: new Date(year, month, date), y:dsum };
+        				Death.push(jsond);
+	
+        			}
+        			
+        			chartContainer3(Confirmed,Recoverd,Death,state_name,fromdate);
+
+        			var DConfirmed=[];
+        			var DRecoverd=[];
+        			var DDeath=[];
+        			for(var i=0;i<response['ConfirmedList'].length;i++){
+        				date=Number(response['ConfirmedList'][i][0][0])
+        				month=calender[response['ConfirmedList'][i][0][1]]
+        				year=2020
+
+        				jsonc={ x: new Date(year, month, date), y: response['ConfirmedList'][i][2] };
+        				DConfirmed.push(jsonc);
+
+        				jsonr={ x: new Date(year, month, date), y: response['RecoverdList'][i][2] };
+        				DRecoverd.push(jsonr);
+
+        				jsond={ x: new Date(year, month, date), y: response['DeathList'][i][2] };
+        				DDeath.push(jsond);
+	
+        			}
+        			
+        			chartContainer4(DConfirmed,DRecoverd,DDeath,state_name,fromdate);
+
+
+
+          
+          			
+
+
+
+
+
+},"json");
+}
+</script>
+{% endblock %}

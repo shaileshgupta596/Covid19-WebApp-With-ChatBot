@@ -1,0 +1,121 @@
+{% extends "covid/commenpage.html" %}
+{% block body %}
+<style>#container {
+            height: 100%;  
+            max-width: 700px; 
+            margin: 0 auto; 
+            
+        }
+        .loading {
+            margin-top: 10em;
+            text-align: center;
+            color: gray;
+        }
+        </style>
+<script src="https://code.highcharts.com/maps/highmaps.js"></script>
+<script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/mapdata/countries/in/custom/in-all-disputed.js"></script>
+
+<div id="container"></div>
+<script>
+    // Prepare demo data
+// Data is joined to map using value of 'hc-key' property by default.
+// See API docs for 'joinBy' for more info on linking data and map.
+var data1 = [
+    ['madhya pradesh', 0,],['uttar pradesh', 1],['karnataka', 2],['nagaland', 3],['bihar', 4],['lakshadweep', 5],
+    ['andaman and nicobar', 6],['assam', 7],['west bengal', 8],['puducherry', 9],['daman and diu', 10],['gujarat', 11],
+    ['rajasthan', 12],['dadara and nagar havelli', 13],['chhattisgarh', 14], ['tamil nadu', 15],['chandigarh', 16],
+    ['punjab', 17], ['haryana', 18], ['andhra pradesh', 19], ['maharashtra', 20], ['himachal pradesh', 21],
+    ['meghalaya', 22], ['kerala', 23], ['telangana', 24],['mizoram', 25],['tripura', 26], ['manipur', 27],
+    ['arunanchal pradesh', 28], ['jharkhand', 29], ['goa', 30], ['nct of delhi', 31], ['odisha', 32],
+    ['jammu and kashmir', 33], ['sikkim', 34],
+    ['uttarakhand', 35]
+];
+var url=localStorage.getItem("url");
+var data=[]
+$.post(url+"fetch_data",{},
+                
+                function(response){
+                    //console.log(response['Info'])
+                   
+                    data1=response['Info']
+                    for(var i=0;i<data1.length;i++){
+                        if (data1[i][0] == "arunachal pradesh")
+                            hckey="arunanchal pradesh"
+                        else if (data1[i][0] == 'delhi')
+                            hckey="nct of delhi"
+                        else{
+                            hckey=data1[i][0]
+                        }
+                        ratio=((Number(data1[i][2].replace(',',''))/Number(data1[i][1].replace(',','')))*100).toFixed(2)
+                        //console.log(ratio)
+    js={"hc-key":hckey,"value":Number(data1[i][4].replace(',','')),'statename':data1[i][0],'totalcases':data1[i][1],"curecases":data1[i][2],'deathCases':data1[i][3],'percentage':ratio}
+    console.log(js)
+    data.push(js) 
+
+}
+
+                // Create the chart
+Highcharts.mapChart('container', {
+    chart: {
+        map: 'countries/in/custom/in-all-disputed'   ,
+        shadow:true,
+        height:550
+
+
+        
+    },
+
+    title: {
+        text: 'Covid-19 India Visualizer'
+    },
+
+    subtitle: {
+        text: '<a href="http://code.highcharts.com/mapdata/countries/in/custom/in-all-disputed.js">India with disputed territories</a>'
+    },
+
+    mapNavigation: {
+        enabled: true,
+        buttonOptions: {
+            verticalAlign: 'bottom'
+        }
+    },
+
+    colorAxis: {
+        min: 0
+
+    },
+
+    tooltip: {
+    formatter: function() {
+        return '<div style="background-color:red"><b>State:'+this.point.statename+'</b><br><b>Statistic:</b><br><b>Total Cases:'
+             + this.point.totalcases+ '</b><br><b>Active Cases:'+this.point.value+'</b><br><b>Death Cases:'+this.point.deathCases+'</b><br><b>Recoverd Caes:'+this.point.curecases+'</b><br><b>Recovery Ratio:'+this.point.percentage+'%</b></div>';
+    }
+    },
+
+    series: [{
+        data: data,
+        name:"Covid-Cases",
+        states: {
+            hover: {
+               color:"red"
+
+            }
+        },
+        dataLabels: {
+            enabled: true,
+            format: '{point.name}'
+        }
+    }]
+});
+
+
+                },"json");
+
+
+
+
+
+
+</script>
+{% endblock %}
